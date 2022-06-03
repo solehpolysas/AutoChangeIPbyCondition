@@ -64,13 +64,13 @@ function MediaUnlockTest() {
     done
     }
 
-	check4=`ping 1.1.1.1 -c 1 2>&1`;
-	check6=`ping6 240c::6666 -c 3 -w 3 2>&1`;
-	
-	if [[ $TYPE = "4" ]] && [[ "$check4" != *"unreachable"* ]] && [[ "$check4" != *"Unreachable"* ]];then
-	    echo -e " ${Font_SkyBlue}** 正在测试IPv4解锁情况${Font_Suffix} "
-	    MediaUnlockTest 4;
-	elif [[ $TYPE = "6" ]] && [[ "$check6" != *"unreachable"* ]] && [[ "$check6" != *"Unreachable"* ]];then
-		echo -e " ${Font_SkyBlue}** 正在测试IPv6解锁情况${Font_Suffix} "
-	    MediaUnlockTest 6;
-	fi
+check4=`ping 1.1.1.1 -c 1 2>&1`;
+check6=`ping6 240c::6666 -c 3 -w 3 2>&1`;
+
+if [[ "$check4" != *"unreachable"* ]] && [[ "$check4" != *"Unreachable"* ]];then
+    echo -e " ${Font_SkyBlue}** 正在测试IPv4解锁情况${Font_Suffix} "
+    MediaUnlockTest 4;
+elif [[ "$check6" != *"unreachable"* ]] && [[ "$check6" != *"Unreachable"* ]];then
+	echo -e " ${Font_SkyBlue}** 正在测试IPv6解锁情况${Font_Suffix} "
+    MediaUnlockTest 6;
+fi
