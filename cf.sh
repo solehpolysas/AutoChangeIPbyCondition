@@ -67,11 +67,17 @@ function MediaUnlockTest() {
 
 check4=`ping 1.1.1.1 -c 1 2>&1`;
 check6=`ping6 240c::6666 -c 3 -w 3 2>&1`;
-
-if [[ "$check4" != *"unreachable"* ]] && [[ "$check4" != *"Unreachable"* ]];then
-    echo -e " ${Font_SkyBlue}** Hunt IPV4 & Check Status${Font_Suffix} "
-    MediaUnlockTest 4;
-elif [[ "$check6" != *"unreachable"* ]] && [[ "$check6" != *"Unreachable"* ]];then
-	echo -e " ${Font_SkyBlue}** Hunt IPV6 & Check Status${Font_Suffix} "
-    MediaUnlockTest 6;
+if [ "$(pgrep -f /root/cf.sh | wc -l)" -gt 2 ]; then
+        echo "CF Already Running!"
+        exit 1
+else
+        echo "NO Duplicate CF Running."
+        if [[ "$check4" != *"unreachable"* ]] && [[ "$check4" != *"Unreachable"* ]];then
+	    	echo -e " ${Font_SkyBlue}** Hunt IPV4 & Check Status${Font_Suffix} "
+	    	MediaUnlockTest 4;
+	elif [[ "$check6" != *"unreachable"* ]] && [[ "$check6" != *"Unreachable"* ]];then
+		echo -e " ${Font_SkyBlue}** Hunt IPV6 & Check Status${Font_Suffix} "
+		MediaUnlockTest 6;
 fi
+fi
+
