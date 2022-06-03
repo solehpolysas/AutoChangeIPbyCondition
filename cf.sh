@@ -10,11 +10,12 @@ Font_Purple="\033[35m";
 Font_SkyBlue="\033[36m";
 Font_White="\033[37m";
 Font_Suffix="\033[0m";
-cf_ip=$(dig +short myip.opendns.com @resolver1.opendns.com)
+
 function MediaUnlockTest() {
     while true
     do
     echo -n -e " Netflix:\t\t\t\t->\c";
+    cf_ip=$(dig +short myip.opendns.com @resolver1.opendns.com);
     local result=`curl -${1} --user-agent "${UA_Browser}" -sSL "https://www.netflix.com/" 2>&1`;
     if [ "$result" == "Not Available" ];then
         echo -n -e "\r Netflix:\t\t${cf_ip}\t\t${Font_Red}Unsupport${Font_Suffix}\n"
@@ -29,7 +30,7 @@ function MediaUnlockTest() {
         sleep 3
         continue
     fi
-    
+    cf_ip=$(dig +short myip.opendns.com @resolver1.opendns.com);
     local result=`curl -${1} --user-agent "${UA_Browser}" -sL "https://www.netflix.com/title/80018499" 2>&1`;
     if [[ "$result" == *"page-404"* ]] || [[ "$result" == *"NSEZ-403"* ]];then
         echo -n -e "\r Netflix:\t\t${cf_ip}\t\t${Font_Red}No${Font_Suffix}\n"
@@ -37,7 +38,7 @@ function MediaUnlockTest() {
         sleep 3
         continue
     fi
-    
+    cf_ip=$(dig +short myip.opendns.com @resolver1.opendns.com);
     local result1=`curl -${1} --user-agent "${UA_Browser}" -sL "https://www.netflix.com/title/70143836" 2>&1`;
     local result2=`curl -${1} --user-agent "${UA_Browser}" -sL "https://www.netflix.com/title/80027042" 2>&1`;
     local result3=`curl -${1} --user-agent "${UA_Browser}" -sL "https://www.netflix.com/title/70140425" 2>&1`;
