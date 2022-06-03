@@ -11,20 +11,6 @@ Font_SkyBlue="\033[36m";
 Font_White="\033[37m";
 Font_Suffix="\033[0m";
 cf_ip=$(dig +short myip.opendns.com @resolver1.opendns.com)
-function input_form(){
-	read -p "Hunt IPV4 or IPV6: (4/6)" -e TYPE
-	read -p "Location (SG/IN/CA): " -e Area
-	check4=`ping 1.1.1.1 -c 1 2>&1`;
-	check6=`ping6 240c::6666 -c 3 -w 3 2>&1`;
-	
-	if [[ $TYPE = "4" ]] && [[ "$check4" != *"unreachable"* ]] && [[ "$check4" != *"Unreachable"* ]];then
-	    echo -e " ${Font_SkyBlue}** 正在测试IPv4解锁情况${Font_Suffix} "
-	    MediaUnlockTest 4;
-	elif [[ $TYPE = "6" ]] && [[ "$check6" != *"unreachable"* ]] && [[ "$check6" != *"Unreachable"* ]];then
-		echo -e " ${Font_SkyBlue}** 正在测试IPv6解锁情况${Font_Suffix} "
-	    MediaUnlockTest 6;
-	fi
-}
 function MediaUnlockTest() {
     while true
     do
@@ -78,4 +64,13 @@ function MediaUnlockTest() {
     done
     }
 
-input_form
+	check4=`ping 1.1.1.1 -c 1 2>&1`;
+	check6=`ping6 240c::6666 -c 3 -w 3 2>&1`;
+	
+	if [[ $TYPE = "4" ]] && [[ "$check4" != *"unreachable"* ]] && [[ "$check4" != *"Unreachable"* ]];then
+	    echo -e " ${Font_SkyBlue}** 正在测试IPv4解锁情况${Font_Suffix} "
+	    MediaUnlockTest 4;
+	elif [[ $TYPE = "6" ]] && [[ "$check6" != *"unreachable"* ]] && [[ "$check6" != *"Unreachable"* ]];then
+		echo -e " ${Font_SkyBlue}** 正在测试IPv6解锁情况${Font_Suffix} "
+	    MediaUnlockTest 6;
+	fi
