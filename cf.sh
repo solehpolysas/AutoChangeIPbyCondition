@@ -10,20 +10,21 @@ Font_Purple="\033[35m";
 Font_SkyBlue="\033[36m";
 Font_White="\033[37m";
 Font_Suffix="\033[0m";
+cf_ip=$(dig +short myip.opendns.com @resolver1.opendns.com)
 function MediaUnlockTest() {
     while true
     do
     echo -n -e " Netflix:\t\t\t\t->\c";
     local result=`curl -${1} --user-agent "${UA_Browser}" -sSL "https://www.netflix.com/" 2>&1`;
     if [ "$result" == "Not Available" ];then
-        echo -n -e "\r Netflix:\t\t\t\t${Font_Red}Unsupport${Font_Suffix}\n"
+        echo -n -e "\r Netflix:${cf_ip}\t\t\t\t${Font_Red}Unsupport${Font_Suffix}\n"
         systemctl restart wg-quick@wgcf
         sleep 3
         continue
     fi
     
     if [[ "$result" == "curl"* ]];then
-        echo -n -e "\r Netflix:\t\t\t\t${Font_Red}Failed (Network Connection)${Font_Suffix}\n"
+        echo -n -e "\r Netflix:${cf_ip}\t\t\t\t${Font_Red}Failed (Network Connection)${Font_Suffix}\n"
         systemctl restart wg-quick@wgcf
         sleep 3
         continue
@@ -31,7 +32,7 @@ function MediaUnlockTest() {
     
     local result=`curl -${1} --user-agent "${UA_Browser}" -sL "https://www.netflix.com/title/80018499" 2>&1`;
     if [[ "$result" == *"page-404"* ]] || [[ "$result" == *"NSEZ-403"* ]];then
-        echo -n -e "\r Netflix:\t\t\t\t${Font_Red}No${Font_Suffix}\n"
+        echo -n -e "\r Netflix:${cf_ip}\t\t\t\t${Font_Red}No${Font_Suffix}\n"
         systemctl restart wg-quick@wgcf
         sleep 3
         continue
@@ -45,7 +46,7 @@ function MediaUnlockTest() {
     local result6=`curl -${1} --user-agent "${UA_Browser}" -sL "https://www.netflix.com/title/70202589" 2>&1`;
     
     if [[ "$result1" == *"page-404"* ]] && [[ "$result2" == *"page-404"* ]] && [[ "$result3" == *"page-404"* ]] && [[ "$result4" == *"page-404"* ]] && [[ "$result5" == *"page-404"* ]] && [[ "$result6" == *"page-404"* ]];then
-        echo -n -e "\r Netflix:\t\t\t\t${Font_Yellow}[N] Mark Only${Font_Suffix}\n"
+        echo -n -e "\r Netflix:${cf_ip}\t\t\t\t${Font_Yellow}[N] Mark Only${Font_Suffix}\n"
         systemctl restart wg-quick@wgcf
         sleep 3
         continue
@@ -56,7 +57,7 @@ function MediaUnlockTest() {
     if [[ ! -n "$region" ]];then
         region="US";
     fi
-    echo -n -e "\r Netflix:\t\t\t\t${Font_Green}Yes(Region: ${region})${Font_Suffix}\n"
+    echo -n -e "\r Netflix:${cf_ip}\t\t\t\t${Font_Green}Yes(Region: ${region})${Font_Suffix}\n"
     if [[ "$region" == "$Area" ]];then
         return
     fi
