@@ -20,14 +20,14 @@ function MediaUnlockTest() {
     if [ "$result" == "Not Available" ];then
         echo -n -e "\r Netflix:\t\t${cf_ip}\t\t${Font_Red}Unsupport${Font_Suffix}\n"
         systemctl restart wg-quick@wgcf
-        sleep 3
+        sleep 5
         continue
     fi
     
     if [[ "$result" == "curl"* ]];then
         echo -n -e "\r Netflix:\t\t${cf_ip}\t\t${Font_Red}Failed (Network Connection)${Font_Suffix}\n"
         systemctl restart wg-quick@wgcf
-        sleep 3
+        sleep 5
         continue
     fi
     cf_ip=$(dig +short myip.opendns.com @resolver1.opendns.com);
@@ -35,7 +35,7 @@ function MediaUnlockTest() {
     if [[ "$result" == *"page-404"* ]] || [[ "$result" == *"NSEZ-403"* ]];then
         echo -n -e "\r Netflix:\t\t${cf_ip}\t\t${Font_Red}No${Font_Suffix}\n"
         systemctl restart wg-quick@wgcf
-        sleep 3
+        sleep 5
         continue
     fi
     cf_ip=$(dig +short myip.opendns.com @resolver1.opendns.com);
@@ -49,7 +49,7 @@ function MediaUnlockTest() {
     if [[ "$result1" == *"page-404"* ]] && [[ "$result2" == *"page-404"* ]] && [[ "$result3" == *"page-404"* ]] && [[ "$result4" == *"page-404"* ]] && [[ "$result5" == *"page-404"* ]] && [[ "$result6" == *"page-404"* ]];then
         echo -n -e "\r Netflix:\t\t${cf_ip}\t\t${Font_Yellow}[N] HomeMade Only${Font_Suffix}\n"
         systemctl restart wg-quick@wgcf
-        sleep 3
+        sleep 5
         continue
     fi
     
