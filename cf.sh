@@ -1,5 +1,5 @@
 #!/bin/bash
-
+Area="SG"
 UA_Browser="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36";
 Font_Black="\033[30m";
 Font_Red="\033[31m";
@@ -46,7 +46,7 @@ function MediaUnlockTest() {
     local result6=`curl -${1} --user-agent "${UA_Browser}" -sL "https://www.netflix.com/title/70202589" 2>&1`;
     
     if [[ "$result1" == *"page-404"* ]] && [[ "$result2" == *"page-404"* ]] && [[ "$result3" == *"page-404"* ]] && [[ "$result4" == *"page-404"* ]] && [[ "$result5" == *"page-404"* ]] && [[ "$result6" == *"page-404"* ]];then
-        echo -n -e "\r Netflix:\t\t${cf_ip}\t\t${Font_Yellow}[N] Mark Only${Font_Suffix}\n"
+        echo -n -e "\r Netflix:\t\t${cf_ip}\t\t${Font_Yellow}[N] HomeMade Only${Font_Suffix}\n"
         systemctl restart wg-quick@wgcf
         sleep 3
         continue
