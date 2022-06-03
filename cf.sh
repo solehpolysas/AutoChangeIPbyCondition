@@ -14,8 +14,8 @@ Font_Suffix="\033[0m";
 function MediaUnlockTest() {
     while true
     do
-    echo -n -e " Netflix:\t\t\t\t->\c";
     cf_ip=$(dig +short myip.opendns.com @resolver1.opendns.com);
+    echo -n -e " Netflix:\t\t${cf_ip}\t\t->\c";
     local result=`curl -${1} --user-agent "${UA_Browser}" -sSL "https://www.netflix.com/" 2>&1`;
     if [ "$result" == "Not Available" ];then
         echo -n -e "\r Netflix:\t\t${cf_ip}\t\t${Font_Red}Unsupport${Font_Suffix}\n"
