@@ -78,3 +78,4 @@ function input_form(){
 	    MediaUnlockTest 6;
 	fi
 }
+input_form
