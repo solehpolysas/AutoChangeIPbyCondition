@@ -17,14 +17,14 @@ function MediaUnlockTest() {
     echo -n -e " Netflix:\t\t\t\t->\c";
     local result=`curl -${1} --user-agent "${UA_Browser}" -sSL "https://www.netflix.com/" 2>&1`;
     if [ "$result" == "Not Available" ];then
-        echo -n -e "\r Netflix:${cf_ip}\t\t\t\t${Font_Red}Unsupport${Font_Suffix}\n"
+        echo -n -e "\r Netflix:\t\t${cf_ip}\t\t${Font_Red}Unsupport${Font_Suffix}\n"
         systemctl restart wg-quick@wgcf
         sleep 3
         continue
     fi
     
     if [[ "$result" == "curl"* ]];then
-        echo -n -e "\r Netflix:${cf_ip}\t\t\t\t${Font_Red}Failed (Network Connection)${Font_Suffix}\n"
+        echo -n -e "\r Netflix:\t\t${cf_ip}\t\t${Font_Red}Failed (Network Connection)${Font_Suffix}\n"
         systemctl restart wg-quick@wgcf
         sleep 3
         continue
@@ -32,7 +32,7 @@ function MediaUnlockTest() {
     
     local result=`curl -${1} --user-agent "${UA_Browser}" -sL "https://www.netflix.com/title/80018499" 2>&1`;
     if [[ "$result" == *"page-404"* ]] || [[ "$result" == *"NSEZ-403"* ]];then
-        echo -n -e "\r Netflix:${cf_ip}\t\t\t\t${Font_Red}No${Font_Suffix}\n"
+        echo -n -e "\r Netflix:\t\t${cf_ip}\t\t${Font_Red}No${Font_Suffix}\n"
         systemctl restart wg-quick@wgcf
         sleep 3
         continue
@@ -46,7 +46,7 @@ function MediaUnlockTest() {
     local result6=`curl -${1} --user-agent "${UA_Browser}" -sL "https://www.netflix.com/title/70202589" 2>&1`;
     
     if [[ "$result1" == *"page-404"* ]] && [[ "$result2" == *"page-404"* ]] && [[ "$result3" == *"page-404"* ]] && [[ "$result4" == *"page-404"* ]] && [[ "$result5" == *"page-404"* ]] && [[ "$result6" == *"page-404"* ]];then
-        echo -n -e "\r Netflix:${cf_ip}\t\t\t\t${Font_Yellow}[N] Mark Only${Font_Suffix}\n"
+        echo -n -e "\r Netflix:\t\t${cf_ip}\t\t${Font_Yellow}[N] Mark Only${Font_Suffix}\n"
         systemctl restart wg-quick@wgcf
         sleep 3
         continue
@@ -57,7 +57,7 @@ function MediaUnlockTest() {
     if [[ ! -n "$region" ]];then
         region="US";
     fi
-    echo -n -e "\r Netflix:${cf_ip}\t\t\t\t${Font_Green}Yes(Region: ${region})${Font_Suffix}\n"
+    echo -n -e "\r Netflix:\t\t${cf_ip}\t\t${Font_Green}Yes(Region: ${region})${Font_Suffix}\n"
     if [[ "$region" == "$Area" ]];then
         return
     fi
@@ -65,10 +65,11 @@ function MediaUnlockTest() {
     }
 check4=`ping 1.1.1.1 -c 1 2>&1`;
 check6=`ping6 240c::6666 -c 3 -w 3 2>&1`;
-if [[ "$check4" != *"unreachable"* ]] && [[ "$check4" != *"Unreachable"* ]];then
+read -p "Hunt IPV4 or IPV6: (4/6)" -e TYPE
+if [[ "$TYPE" == "4" ]] && [[ "$check4" != *"unreachable"* ]] && [[ "$check4" != *"Unreachable"* ]];then
     echo -e " ${Font_SkyBlue}** 正在测试IPv4解锁情况${Font_Suffix} "
     MediaUnlockTest 4;
-elif [[ "$check6" != *"unreachable"* ]] && [[ "$check6" != *"Unreachable"* ]];then
+elif [[ "$TYPE" == "6" ]] && [[ "$check6" != *"unreachable"* ]] && [[ "$check6" != *"Unreachable"* ]];then
 	echo -e " ${Font_SkyBlue}** 正在测试IPv6解锁情况${Font_Suffix} "
     MediaUnlockTest 6;
 fi
